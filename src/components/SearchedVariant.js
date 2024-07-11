@@ -6,7 +6,7 @@ const SearchedVariant = ({ variant, isChecked, handleChildrenCheck }) => {
     return (
         <div className='variant'>
             <div className='title-container'>
-                <input type="checkbox" checked={isChecked} onChange={(e) => handleChildrenCheck(variant.id)} name="variant-checkbox" id={"variant-checkbox-" + variant.id} />
+                <input type="checkbox" checked={isChecked} className='cursor-pointer' onChange={(e) => handleChildrenCheck(variant.id)} name="variant-checkbox" id={"variant-checkbox-" + variant.id} />
                 <span>{variant.title}</span>
             </div>
             <div className='availability-container'>

@@ -43,7 +43,7 @@ const SearchedProductParent = ({ product }) => {
     return (
         <div>
             <div className='parent-container'>
-                <input type="checkbox" id={"parent-prod-" + product.id} name='parent-prod' checked={parentChecked} onChange={(e) => handleProductSelection(e.target.checked, product)} />
+                <input type="checkbox" id={"parent-prod-" + product.id} className='cursor-pointer' name='parent-prod' checked={parentChecked} onChange={(e) => handleProductSelection(e.target.checked, product)} />
                 <img src={product.image?.src} width={20} height={20} alt="Product" />
                 <span>{product.title}</span>
             </div>

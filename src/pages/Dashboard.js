@@ -12,7 +12,7 @@ const Dashboard = () => {
             <div>
                 <h3>Add Products</h3>
                 <ProductList />
-                <button type="button" className='add-product-btn' onClick={() => dispatch(addProducts([{ id: generateRandomId() }]))}>Add Product</button>
+                <button type="button" className='add-product-btn cursor-pointer' onClick={() => dispatch(addProducts([{ id: generateRandomId() }]))}>Add Product</button>
             </div>
         </div>
     )

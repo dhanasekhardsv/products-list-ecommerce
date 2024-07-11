@@ -25,7 +25,7 @@ const DialogBox = () => {
             <div className='dialog-container'>
                 <div className="dialog-header">
                     <h3>Select Products</h3>
-                    <img src={crossIcon} alt="close" width={15} height={15} onClick={handleCloseDialogBox} />
+                    <img src={crossIcon} alt="close" className='cursor-pointer' width={15} height={15} onClick={handleCloseDialogBox} />
                 </div>
                 <div className="dialog-body">
                     <SearchedProducts />
@@ -33,8 +33,8 @@ const DialogBox = () => {
                 <div className="dialog-footer">
                     <span>{selProds.length} product selected</span>
                     <div className="action-buttons">
-                        <button type="button" className='cancel-btn' onClick={handleCloseDialogBox}>Cancel</button>
-                        <button type="button" className='add-btn' onClick={addSelectedProds}>Add</button>
+                        <button type="button" className='cancel-btn cursor-pointer' onClick={handleCloseDialogBox}>Cancel</button>
+                        <button type="button" className='add-btn cursor-pointer' onClick={addSelectedProds}>Add</button>
                     </div>
                 </div>
             </div>
