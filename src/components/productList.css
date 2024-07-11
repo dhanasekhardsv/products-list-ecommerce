@@ -1,0 +1,16 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+    gap: 10px;
+}
+.grid-container > *{
+    margin: auto;
+}
+.product-title-label, .product-discount-label{
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 0;
+}
+.product-discount-label {
+    grid-column: 4/span 3;
+}

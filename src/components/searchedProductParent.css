@@ -1,0 +1,19 @@
+.parent-container>img {
+    height: 35px;
+    width: 35px;
+    border-radius: 3px;
+}
+
+.parent-container>span, .variant span {
+    font-size: 16px;
+}
+
+.parent-container>input, .variant .title-container input {
+    width: 25px;
+    height: 25px;
+
+}
+
+.parent-container>*, .variant input, .variant span {
+    margin-right: 10px;
+}

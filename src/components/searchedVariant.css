@@ -1,0 +1,21 @@
+.variant {
+    padding: 5px 0 5px 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.variant .title-container, .variant .availability-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.variant .availability-container>* {
+    margin-right: 20px;
+}
+
+@media screen and (max-width: 576px) {
+    .variant {
+        padding-left: 10px;
+    }
+}
