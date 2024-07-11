@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './searchedProducts.css';
 import { setSearchedProducts } from '../store/products/productsSlice';
@@ -26,7 +26,7 @@ const SearchedProducts = () => {
   const handleChange = (value) => {
     dispatch(setSearchedProducts(data));
   };
-  const optimizedFn = useCallback(debounce(handleChange, 600), []);
+  const optimizedFn = debounce(handleChange, 600);
 
   const handleSearchText = (val) => {
     setSearchText(val);
@@ -35,7 +35,7 @@ const SearchedProducts = () => {
 
   useEffect(() => {
     dispatch(setSearchedProducts(data));
-  }, []);
+  }, [dispatch]);
   return (
     <>
       <div className="searchbar">
