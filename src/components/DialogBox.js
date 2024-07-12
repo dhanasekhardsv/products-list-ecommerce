@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './dialogBox.css';
 import crossIcon from '../images/cross-large.png';
 import SearchedProducts from './SearchedProducts';
 import { closeDialogBox } from '../store/config/configSlice';
 import { addSelectedProductsToProducts, resetSelectedProducts, setCurrentEditingProduct } from '../store/products/productsSlice';
-import axios from 'axios';
 
 const DialogBox = () => {
     const currentProdId = useSelector(state => state.products.currentEditingProduct);
@@ -21,13 +20,6 @@ const DialogBox = () => {
         dispatch(resetSelectedProducts());
         handleCloseDialogBox();
     }
-    useEffect(() => {
-        axios.get('http://stageapi.monkcommerce.app/task/products/search?search=Hat&page=0&limit=10', {
-            auth: {
-                "x-api-key": process.env.REACT_APP_API_KEY
-            },
-        }).then(res => console.log(res.data)).catch(err => console.log(err))
-    }, []);
     return (
         <div className="dialog">
             <div className='dialog-container'>

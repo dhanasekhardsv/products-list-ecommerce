@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import './searchedProductParent.css'
+import './searchedProductParent.css';
+import dummyProd from '../images/dummy-product.png';
 import SearchedVariant from './SearchedVariant';
 import { setSelectedProducts } from '../store/products/productsSlice';
 
@@ -44,7 +45,7 @@ const SearchedProductParent = ({ product }) => {
         <div>
             <div className='parent-container'>
                 <input type="checkbox" id={"parent-prod-" + product.id} className='cursor-pointer' name='parent-prod' checked={parentChecked} onChange={(e) => handleProductSelection(e.target.checked, product)} />
-                <img src={product.image?.src} width={20} height={20} alt="Product" />
+                <img src={product.image.src ? product.image.src : dummyProd} width={20} height={20} alt="Product" />
                 <span>{product.title}</span>
             </div>
             <div className="variants">

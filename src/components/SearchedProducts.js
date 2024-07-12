@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './searchedProducts.css';
-import { setSearchedProducts } from '../store/products/productsSlice';
+import { fetchSearchedProducts } from '../store/products/productsSlice';
 import SearchedProductParent from './SearchedProductParent';
-import data from '../data';
+import { setProdResultsPage } from '../store/config/configSlice';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const SearchedProducts = () => {
   const [searchText, setSearchText] = useState('');
-  const searchedProds = useSelector(state => state.products.searchedProducts?.data);
-  const loading = false;
-  const error = '';
+  const { loading, error, data } = useSelector(state => state.products.searchedProducts);
+  const currentResultPage = useSelector(state => state.config.prodResultsPage);
   const dispatch = useDispatch();
 
   const debounce = (func, delay) => {
@@ -24,7 +24,7 @@ const SearchedProducts = () => {
     };
   };
   const handleChange = (value) => {
-    dispatch(setSearchedProducts(data));
+    dispatch(fetchSearchedProducts({ searchText: value.trim(), page: currentResultPage, limit: 10 }));
   };
   const optimizedFn = debounce(handleChange, 600);
 
@@ -33,8 +33,14 @@ const SearchedProducts = () => {
     optimizedFn(val);
   }
 
+  const fetchDataOnScroll = () => {
+    dispatch(setProdResultsPage(currentResultPage + 1));
+    console.log(currentResultPage);
+    dispatch(fetchSearchedProducts({ searchText: searchText.trim(), page: currentResultPage, limit: 10 }));
+  }
+
   useEffect(() => {
-    dispatch(setSearchedProducts(data));
+    dispatch(fetchSearchedProducts({ searchText: '', page: 0, limit: 10 }));
   }, [dispatch]);
   return (
     <>
@@ -44,15 +50,22 @@ const SearchedProducts = () => {
       <div className="products">
         {
           loading ? (<div className="loader"></div>) : (error.length ? (<div className='error'>{error}</div>) : (
-            <div className='prods-container'>
-              {
-                searchedProds && searchedProds.map(prod => {
-                  return (
-                    <SearchedProductParent key={prod.id} product={prod} />
-                  )
-                })
-              }
-            </div>
+            <>
+              <div className='prods-container'>
+                {
+                  data?.length ? data.map(prod => {
+                    return (
+                      <SearchedProductParent key={prod.id} product={prod} />
+                    )
+                  }) : <div className='error'>No such products available</div>
+                }
+              </div>
+              <InfiniteScroll
+                dataLength={data?.length}
+                next={fetchDataOnScroll}
+                hasMore={true}
+                loader={<h4>Loading...</h4>} />
+            </>
           ))
         }
       </div>
