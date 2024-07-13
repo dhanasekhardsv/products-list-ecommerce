@@ -23,7 +23,7 @@ const initialState = {
 
 export const fetchSearchedProducts = createAsyncThunk('products/fetchSearchedProducts', async (params, { rejectWithValue, fulfillWithValue }) => {
     let reqHeaders = new Headers();
-    reqHeaders.append("x-api-key", "72njgfa948d9aS7gs5");
+    reqHeaders.append("x-api-key", process.env.REACT_APP_API_KEY);
     let options = {
         methods: 'GET',
         headers: reqHeaders
