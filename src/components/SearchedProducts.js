@@ -26,7 +26,6 @@ const SearchedProducts = () => {
   const handleChange = (value) => {
     dispatch(setProdResultsPage(0));
     dispatch(fetchSearchedProducts({ searchText: value.trim(), page: 0, textChange: true }));
-    console.log(hasMore);
   };
   const optimizedFn = debounce(handleChange, 600);
 

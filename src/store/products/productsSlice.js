@@ -30,7 +30,6 @@ export const fetchSearchedProducts = createAsyncThunk('products/fetchSearchedPro
     }
     try {
         const { searchText, page, textChange } = params;
-        console.log(params);
         const response = await fetch(`https://stageapi.monkcommerce.app/task/products/search?search=${searchText}&page=${page}&limit=10`, options);
         const prodData = await response.json();
         return fulfillWithValue({ data: prodData, textChange: textChange });
