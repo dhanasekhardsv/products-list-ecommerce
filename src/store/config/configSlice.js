@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    dialogBoxOpen: false,
-    prodResultsPage: 0
+    dialogBoxOpen: false
 }
 
 const configSlice = createSlice({
@@ -14,12 +13,9 @@ const configSlice = createSlice({
         },
         closeDialogBox: (state) => {
             state.dialogBoxOpen = false;
-        },
-        setProdResultsPage: (state, action) => {
-            state.prodResultsPage = action.payload;
         }
     }
 });
 
-export const { openDialogBox, closeDialogBox, setProdResultsPage } = configSlice.actions;
+export const { openDialogBox, closeDialogBox } = configSlice.actions;
 export const configReducer = configSlice.reducer;

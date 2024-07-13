@@ -4,7 +4,7 @@
     outline: none;
 }
 
-.searchbar, .products {
+.searchbar {
     padding: 10px;
     display: flex;
     justify-content: center;
@@ -14,11 +14,12 @@
     width: 97%;
 }
 
-.searchbar, .products, .parent-container, .variant {
+.searchbar, .parent-container, .variant {
     border-bottom: 2px solid #0000001A;
 }
 
 .products {
+    padding: 10px;
     overflow-y: scroll;
     height: 50vh;
 }
@@ -71,6 +72,16 @@
     width: 40px;
     height: 40px;
     animation: spin 2s linear infinite;
+    margin: auto;
+}
+
+.load-more-btn {
+    color: #008060;
+    border: 2px solid #008060;
+    background: #ffff;
+    border-radius: 3px;
+    margin-top: 10px;
+    padding: 5px 10px;
 }
 
 @keyframes spin {

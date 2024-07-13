@@ -16,21 +16,24 @@ const initialState = {
         productIds: [],
         mappings: {}
     },
-    currentEditingProduct: null
+    currentEditingProduct: null,
+    prodResultsPage: 0,
+    hadMoreProducts: true
 }
 
 export const fetchSearchedProducts = createAsyncThunk('products/fetchSearchedProducts', async (params, { rejectWithValue, fulfillWithValue }) => {
     let reqHeaders = new Headers();
     reqHeaders.append("x-api-key", "72njgfa948d9aS7gs5");
-    console.log(reqHeaders.entries());
     let options = {
         methods: 'GET',
         headers: reqHeaders
     }
     try {
-        const response = await fetch(`https://stageapi.monkcommerce.app/task/products/search?search=${params.searchText}&page=${params.page}&limit=${params.limit}`, options);
+        const { searchText, page, textChange } = params;
+        console.log(params);
+        const response = await fetch(`https://stageapi.monkcommerce.app/task/products/search?search=${searchText}&page=${page}&limit=10`, options);
         const prodData = await response.json();
-        return fulfillWithValue(prodData);
+        return fulfillWithValue({ data: prodData, textChange: textChange });
     } catch (error) {
         return rejectWithValue(error.message)
     }
@@ -90,22 +93,27 @@ const productsSlice = createSlice({
                 return prod;
             });
             state.products = newProds;
+        },
+        setProdResultsPage: (state, action) => {
+            state.prodResultsPage = action.payload;
         }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchSearchedProducts.pending, (state) => {
             state.searchedProducts.loading = true;
         }).addCase(fetchSearchedProducts.fulfilled, (state, action) => {
-            state.searchedProducts.data = action.payload ? action.payload : [];
-            state.searchedProducts.error = '';
+            let newData = action.payload.data ? action.payload.data : [];
+            state.hadMoreProducts = (newData.length === 10);
             state.searchedProducts.loading = false;
+            state.searchedProducts.data = action.payload.textChange ? newData : [...state.searchedProducts.data, ...newData];
+            state.searchedProducts.error = '';
         }).addCase(fetchSearchedProducts.rejected, (state, action) => {
+            state.searchedProducts.loading = false;
             state.searchedProducts.data = [];
             state.searchedProducts.error = "Something went wrong. Please try again.";
-            state.searchedProducts.loading = false;
         })
     }
 });
 
-export const { addProducts, setSearchedProducts, setSelectedProducts, setCurrentEditingProduct, addSelectedProductsToProducts, resetSelectedProducts, removeProduct, removeVariant } = productsSlice.actions;
+export const { addProducts, setSelectedProducts, setCurrentEditingProduct, addSelectedProductsToProducts, resetSelectedProducts, removeProduct, removeVariant, setProdResultsPage } = productsSlice.actions;
 export const productsReducer = productsSlice.reducer;

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './searchedProducts.css';
-import { fetchSearchedProducts } from '../store/products/productsSlice';
 import SearchedProductParent from './SearchedProductParent';
-import { setProdResultsPage } from '../store/config/configSlice';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import { fetchSearchedProducts } from '../store/products/productsSlice';
+import { setProdResultsPage } from '../store/products/productsSlice';
 
 const SearchedProducts = () => {
   const [searchText, setSearchText] = useState('');
   const { loading, error, data } = useSelector(state => state.products.searchedProducts);
-  const currentResultPage = useSelector(state => state.config.prodResultsPage);
+  const currentResultPage = useSelector(state => state.products.prodResultsPage);
+  const hasMore = useSelector(state => state.products.hadMoreProducts);
   const dispatch = useDispatch();
 
   const debounce = (func, delay) => {
@@ -24,7 +24,9 @@ const SearchedProducts = () => {
     };
   };
   const handleChange = (value) => {
-    dispatch(fetchSearchedProducts({ searchText: value.trim(), page: currentResultPage, limit: 10 }));
+    dispatch(setProdResultsPage(0));
+    dispatch(fetchSearchedProducts({ searchText: value.trim(), page: 0, textChange: true }));
+    console.log(hasMore);
   };
   const optimizedFn = debounce(handleChange, 600);
 
@@ -33,14 +35,14 @@ const SearchedProducts = () => {
     optimizedFn(val);
   }
 
-  const fetchDataOnScroll = () => {
-    dispatch(setProdResultsPage(currentResultPage + 1));
-    console.log(currentResultPage);
-    dispatch(fetchSearchedProducts({ searchText: searchText.trim(), page: currentResultPage, limit: 10 }));
+  const fetchMoreData = () => {
+    let nextPage = currentResultPage + 1;
+    dispatch(setProdResultsPage(nextPage));
+    dispatch(fetchSearchedProducts({ searchText: searchText.trim(), page: nextPage, textChange: false }));
   }
 
   useEffect(() => {
-    dispatch(fetchSearchedProducts({ searchText: '', page: 0, limit: 10 }));
+    dispatch(fetchSearchedProducts({ searchText: '', page: 0, textChange: true }));
   }, [dispatch]);
   return (
     <>
@@ -53,18 +55,19 @@ const SearchedProducts = () => {
             <>
               <div className='prods-container'>
                 {
-                  data?.length ? data.map(prod => {
-                    return (
-                      <SearchedProductParent key={prod.id} product={prod} />
-                    )
-                  }) : <div className='error'>No such products available</div>
+                  data?.length ?
+                    data.map(prod => {
+                      return (
+                        <SearchedProductParent key={prod.id} product={prod} />
+                      )
+                    })
+                    :
+                    <div className='error'>No such products available</div>
                 }
               </div>
-              <InfiniteScroll
-                dataLength={data?.length}
-                next={fetchDataOnScroll}
-                hasMore={true}
-                loader={<h4>Loading...</h4>} />
+              {
+                hasMore ? <button type="button" className='load-more-btn cursor-pointer' onClick={fetchMoreData}>Load More...</button> : null
+              }
             </>
           ))
         }
